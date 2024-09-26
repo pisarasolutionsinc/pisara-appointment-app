@@ -2,7 +2,11 @@ import Button from "../../../components/buttons/Button";
 import { APP_CONSTANTS, WEBAPP } from "../../../config/config";
 import { PLACEHOLDERS } from "../../../config/placeholderImg";
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  scrollToSchedule: () => void;
+}
+
+const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
   return (
     <div className="relative h-screen w-full overflow-hidden">
       <img
@@ -19,6 +23,7 @@ const HeroSection = () => {
           </p>
           <Button
             className="bg-primary text-white rounded-full text-lg uppercase shadow-md"
+            onClick={scrollToSchedule}
             ariaLabel={APP_CONSTANTS.BUTTONS.BOOK_NOW}
           >
             {APP_CONSTANTS.BUTTONS.BOOK_NOW}

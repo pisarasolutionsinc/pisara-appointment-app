@@ -24,12 +24,14 @@ interface InputFormProps {
   className?: string;
   placeholder?: string;
   value?: string | number;
-  onChange?: (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
-  max?: number;
+  max?: number | string;
+  min?: number | string;
   maxLength?: number;
+  step?: number | string;
+  disabled?: boolean;
+  readOnly?: boolean;
 }
 
 // Use forwardRef to forward the ref to the input element
@@ -43,7 +45,11 @@ const InputForm = forwardRef<HTMLInputElement, InputFormProps>(
       onChange,
       onKeyDown,
       max,
+      min,
       maxLength,
+      step,
+      disabled = false,
+      readOnly = false,
     },
     ref
   ) => {
@@ -51,13 +57,20 @@ const InputForm = forwardRef<HTMLInputElement, InputFormProps>(
       <input
         ref={ref}
         type={type}
-        className={twMerge("w-full rounded-lg border-0", className)}
+        className={twMerge(
+          "w-full rounded-lg border-0 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary", // Default styling
+          className
+        )}
         value={value}
         onChange={onChange}
         onKeyDown={onKeyDown}
         placeholder={placeholder}
         max={max}
+        min={min}
         maxLength={maxLength}
+        step={step}
+        disabled={disabled}
+        readOnly={readOnly}
       />
     );
   }

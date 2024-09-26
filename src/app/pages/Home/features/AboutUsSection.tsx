@@ -1,4 +1,4 @@
-import Button from "../../../components/buttons/Button";
+import LinkButton from "../../../components/buttons/LinkButton";
 import { APP_CONSTANTS, WEBAPP } from "../../../config/config";
 
 const AboutUsSection = () => {
@@ -14,12 +14,13 @@ const AboutUsSection = () => {
             <p className="text-black text-lg whitespace-pre-wrap break-words max-w-3xl">
               {WEBAPP.ABOUT}
             </p>
-            <Button
+            <LinkButton
+              path="/faqs"
               className="bg-primary text-white"
               ariaLabel={APP_CONSTANTS.BUTTONS.LEARN_MORE}
             >
               {APP_CONSTANTS.BUTTONS.LEARN_MORE}
-            </Button>
+            </LinkButton>
           </section>
         </div>
       </div>
