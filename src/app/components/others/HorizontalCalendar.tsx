@@ -56,7 +56,7 @@ function HorizontalCalendar({
         <div
           key={i}
           onClick={() => handleDayClick(day)}
-          className={`cursor-pointer flex flex-col items-center p-2 rounded-lg transform transition duration-300 ease-in-out w-1/2 space-y-1 shadow-md ${
+          className={`w-full cursor-pointer flex flex-col items-center p-2 rounded-lg transform transition duration-300 ease-in-out space-y-1 shadow-md ${
             isSelected
               ? "bg-white border-2 border-secondary"
               : "bg-accent hover:bg-gray-200"
@@ -84,11 +84,11 @@ function HorizontalCalendar({
 
   return (
     <div className="flex items-center justify-center container mx-auto">
-      <div className="flex justify-between gap-5 w-full items-center">
+      <div className="flex justify-between md:gap-5 w-full items-center">
         <Button onClick={handlePreviousWeek} className="p-2">
           <IoIosArrowBack className="text-accent text-4xl" />
         </Button>
-        <div className="flex justify-between gap-5 w-full">{renderDays()}</div>
+        <div className="grid grid-cols-2  md:grid-cols-7 gap-5 w-full">{renderDays()}</div>
         <Button onClick={handleNextWeek} className="p-2">
           <IoIosArrowForward className="text-accent text-4xl" />
         </Button>

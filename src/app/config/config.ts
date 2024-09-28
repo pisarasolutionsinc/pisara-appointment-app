@@ -1,4 +1,13 @@
+import { FaCreditCard, FaFileAlt } from "react-icons/fa";
 import PISARA_LOGO from "../../assets/pisara-logo.png";
+import { FaCheck, FaEye } from "react-icons/fa6";
+import GCASH from "../../assets/gcash.webp";
+import GOTYME from "../../assets/gotyme.webp";
+import MAYA from "../../assets/maya.webp";
+import UNIONBANK from "../../assets/unionbank.webp";
+import BPI from "../../assets/bpi.webp";
+import BDO from "../../assets/bdo.webp";
+import PAYPAL from "../../assets/paypal.webp";
 
 export const WEBAPP = {
   NAME: "PISARA Appointment App",
@@ -21,6 +30,11 @@ export const APP_CONSTANTS = {
     GET_IN_TOUCH: "GET IN TOUCH",
     FAQ: "FREQUENTLY ASKED QUESTIONS",
     HELP_CENTER: "HELP CENTER",
+    APPOINTMENT: "APPOINTMENT",
+    IN_CASE_OF_EMERGENCY: "IN CASE OF EMERGENCY",
+    APPOINTMENT_CONFIRMATION: "APPOINTMENT CONFIRMATION",
+    PAYMENT: "PAYMENT",
+    YOUR_INFORMATION: "YOUR INFORMATION",
   },
   DESCRIPTIONS: {
     FAQ: "Here are some answers to popular questions about our brand and products.  Looking to get in touch or have other questions not listed?",
@@ -29,6 +43,12 @@ export const APP_CONSTANTS = {
     ENTER_PASSCODE: "Enter Passcode",
     PLEASE_WAIT: "Please wait",
     GO_TO_HOME_PAGE: "Go to Home Page",
+    PAYMENT_METHODS: "Payment Methods:",
+    CARD_NUMBER: "Card Number",
+    NAME: "Name",
+    EXPIRATION_DATE: "Expiration Date",
+    CVV: "CVV",
+    SET_AS_DEFAULT_PAYMENT_METHOD: "Set as your default payment method",
   },
   PLACEHOLDERS: {
     TYPE_MESSAGE_HERE: "Type a message here...",
@@ -38,6 +58,7 @@ export const APP_CONSTANTS = {
   },
   BUTTONS: {
     BOOK_NOW: "Book Now",
+    BOOK: "Book",
     START_BOOKING: "Start Booking",
     BACK: "Back",
     NEXT: "Next",
@@ -61,6 +82,59 @@ export const APP_CONSTANTS = {
       MESSAGE: "The page you are looking for does not exist.",
     },
   },
+  FORM_QUESTIONS: {
+    HAVE_SURGERY: "Have you ever had any surgery in the last 3 months?",
+    HAVE_MEDICATION: "Have you taken any medication in the last 24 hours?",
+    HAVE_MEDICAL_CONDITION: "Do you have any medical condition?",
+    HAVE_FAMILY_HISTORY_OF_MEDICAL_CONDITION:
+      "Do you have any family history of medical condition?",
+  },
+};
+
+export const DROPDOWN = {
+  GENDER: [
+    { label: "Male", value: "male" },
+    { label: "Female", value: "female" },
+    { label: "Other", value: "other" },
+  ],
+  RELATIONSHIP: [
+    { label: "Mother", value: "mother" },
+    { label: "Father", value: "father" },
+    { label: "Sibling", value: "sibling" },
+    { label: "Cousin", value: "cousin" },
+    { label: "Husband", value: "husband" },
+    { label: "Wife", value: "wife" },
+    { label: "Daughter", value: "daughter" },
+    { label: "Son", value: "son" },
+    { label: "Aunt", value: "aunt" },
+    { label: "Uncle", value: "uncle" },
+    { label: "Grandmother", value: "grandmother" },
+    { label: "Grandfather", value: "grandfather" },
+    { label: "Nephew", value: "nephew" },
+    { label: "Niece", value: "niece" },
+    { label: "Partner", value: "partner" },
+    { label: "Fiancé", value: "fiance" },
+    { label: "Friend", value: "friend" },
+    { label: "Colleague", value: "colleague" },
+    { label: "Guardian", value: "guardian" },
+    { label: "Stepfather", value: "stepfather" },
+    { label: "Stepmother", value: "stepmother" },
+    { label: "Stepson", value: "stepson" },
+    { label: "Stepdaughter", value: "stepdaughter" },
+    { label: "Other", value: "other" },
+  ],
+};
+
+export const STEPS = [FaFileAlt, FaEye, FaCreditCard, FaCheck];
+
+export const PAYMENT_METHOD = [
+  { name: "Card", logo: "" },
+  { name: "Bank", logo: "" },
+];
+
+export const PAYMENT_METHODS_IMG = {
+  CARD: [BDO, BPI, UNIONBANK, GOTYME],
+  BANK: [PAYPAL, GCASH, MAYA],
 };
 
 export const FAQ_CONTENT = [

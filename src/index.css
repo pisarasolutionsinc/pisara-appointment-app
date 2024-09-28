@@ -38,5 +38,30 @@
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(105, 105, 105)8d2;
+  background: rgb(105, 105, 105) 8d2;
+}
+
+.StyledReceipt {
+  background: linear-gradient(
+    0deg,
+    #ebe9e9,
+    #fdfdfd,
+    #fdfdfd,
+    #fdfdfd,
+    #fdfdfd,
+    #fdfdfd,
+    #ffffff,
+    #ffffff,
+    #ffffff
+  );
+  padding: 1rem 1rem 2rem;
+  --mask: conic-gradient(
+      from -45deg at bottom,
+      #0000,
+      #000 1deg 89deg,
+      #0000 90deg
+    )
+    50%/30px 100%;
+  -webkit-mask: var(--mask);
+  mask: var(--mask);
 }

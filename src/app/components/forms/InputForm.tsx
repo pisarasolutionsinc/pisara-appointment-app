@@ -2,6 +2,7 @@ import React, { forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 
 interface InputFormProps {
+  label?: string;
   type?:
     | "button"
     | "date"
@@ -21,6 +22,8 @@ interface InputFormProps {
     | "url"
     | "week"
     | "color";
+  id?: string;
+  name?: string;
   className?: string;
   placeholder?: string;
   value?: string | number;
@@ -34,10 +37,12 @@ interface InputFormProps {
   readOnly?: boolean;
 }
 
-// Use forwardRef to forward the ref to the input element
 const InputForm = forwardRef<HTMLInputElement, InputFormProps>(
   (
     {
+      label,
+      id,
+      name,
       type = "text",
       className,
       placeholder = "Placeholder",
@@ -54,28 +59,38 @@ const InputForm = forwardRef<HTMLInputElement, InputFormProps>(
     ref
   ) => {
     return (
-      <input
-        ref={ref}
-        type={type}
-        className={twMerge(
-          "w-full rounded-lg border-0 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary", // Default styling
-          className
+      <div className="space-y-2">
+        {label && (
+          <label htmlFor={id} className="block text-black font-semibold">
+            {label}
+          </label>
         )}
-        value={value}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        placeholder={placeholder}
-        max={max}
-        min={min}
-        maxLength={maxLength}
-        step={step}
-        disabled={disabled}
-        readOnly={readOnly}
-      />
+
+        <input
+          ref={ref}
+          id={id}
+          name={name}
+          type={type}
+          className={twMerge(
+            "w-full rounded-lg border-0 px-3 py-2 focus:outline-none focus:ring focus:ring-primary",
+            className
+          )}
+          value={value}
+          onChange={onChange}
+          onKeyDown={onKeyDown}
+          placeholder={placeholder}
+          max={max}
+          min={min}
+          maxLength={maxLength}
+          step={step}
+          disabled={disabled}
+          readOnly={readOnly}
+        />
+      </div>
     );
   }
 );
 
-InputForm.displayName = "InputForm"; // Set a display name for the component
+InputForm.displayName = "InputForm";
 
 export default InputForm;
