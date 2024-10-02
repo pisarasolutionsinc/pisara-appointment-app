@@ -2,6 +2,7 @@ import { useState } from "react";
 import { APP_CONSTANTS, PAYMENT_METHOD } from "../../../config/config";
 import InputForm from "../../../components/forms/InputForm";
 import Button from "../../../components/buttons/Button";
+import RadioForm from "../../../components/forms/RadioForm";
 
 const AppointmentPayment = () => {
   const [selectedOption, setSelectedOption] = useState("");
@@ -99,9 +100,18 @@ const AppointmentPayment = () => {
           )}
 
           {selectedOption === "Bank" && <div>sasa</div>}
-          <div className="flex items-center gap-5 text-gray-800">
-            <input type="checkbox" name="" id="" className="rounded-sm" />
-            <h1>Set as your default payment method</h1>
+          <div className="flex items-center justify-between gap-3 text-gray-800">
+            <div className="flex gap-3">
+              <RadioForm type="checkbox" className="rounded-sm p-1" />
+              <h1 className="text-black">
+                {APP_CONSTANTS.LABELS.SET_AS_DEFAULT_PAYMENT_METHOD}
+              </h1>
+            </div>
+            <div>
+              <Button className="bg-primary text-white py-2" ariaLabel={APP_CONSTANTS.BUTTONS.PAY}>
+                {APP_CONSTANTS.BUTTONS.PAY}
+              </Button>
+            </div>
           </div>
         </section>
       </div>

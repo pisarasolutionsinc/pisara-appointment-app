@@ -5,6 +5,7 @@ interface RadioFormProps {
   label?: string;
   id?: string;
   name?: string;
+  type?: "radio" | "checkbox";
   className?: string;
   value?: string | number;
   checked?: boolean;
@@ -20,6 +21,7 @@ const RadioForm = forwardRef<HTMLInputElement, RadioFormProps>(
       label,
       id,
       name,
+      type = "radio",
       className,
       value,
       checked,
@@ -47,7 +49,7 @@ const RadioForm = forwardRef<HTMLInputElement, RadioFormProps>(
           ref={ref}
           id={id}
           name={name}
-          type="radio"
+          type={type}
           className={twMerge(
             "p-3 focus:outline-none focus:ring-0",
             className,

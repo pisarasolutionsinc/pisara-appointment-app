@@ -35,9 +35,12 @@ export const APP_CONSTANTS = {
     APPOINTMENT_CONFIRMATION: "APPOINTMENT CONFIRMATION",
     PAYMENT: "PAYMENT",
     YOUR_INFORMATION: "YOUR INFORMATION",
+    APPOINTMENT_BOOKED_SUCCESSFULLY: "Your Appointment Booked Successfully!",
   },
   DESCRIPTIONS: {
     FAQ: "Here are some answers to popular questions about our brand and products.  Looking to get in touch or have other questions not listed?",
+    BOOKING_INFO_IN_YOUR_EMAIL:
+      "We have sent your booking information to your email address",
   },
   LABELS: {
     ENTER_PASSCODE: "Enter Passcode",
@@ -64,6 +67,9 @@ export const APP_CONSTANTS = {
     NEXT: "Next",
     LEARN_MORE: "Learn More",
     CONTACT_US_HERE: "Contact us here",
+    PAY: "Pay",
+    SUBMIT: "Submit",
+    CLOSE: "Close",
   },
   ERROR: {
     UNAUTHORIZED: {
