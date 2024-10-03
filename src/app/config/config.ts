@@ -445,3 +445,17 @@ export const FAQ_CONTENT = [
     ],
   },
 ];
+
+export const CLOUDINARY = {
+  CLOUD_NAME: "pisara-dev" || process.env.CLOUD_NAME,
+  UPLOAD_PRESET_UNASIGNED: "pisara-dev" || process.env.UPLOAD_PRESET_UNASIGNED,
+  DEFAULT_FOLDER: "pisara-app/" || process.env.DEFAULT_FOLDER,
+  API_KEY: "166187199846281" || process.env.API_KEY,
+  API_SECRET: "RMUJDULoCJ31xmIxvB5POe5641M" || process.env.API_SECRET,
+  IMAGE_UPLOAD_ENDPOINT:
+    "https://api.cloudinary.com/v1_1/pisara-dev/image/upload" ||
+    process.env.IMAGE_UPLOAD_ENDPOINT,
+  IMAGE_DESTROY_ENDPOINT:
+    "https://api.cloudinary.com/v1_1/pisara-dev/image/destroy" ||
+    process.env.IMAGE_DESTROY_ENDPOINT,
+};
