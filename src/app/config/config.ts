@@ -36,11 +36,17 @@ export const APP_CONSTANTS = {
     PAYMENT: "PAYMENT",
     YOUR_INFORMATION: "YOUR INFORMATION",
     APPOINTMENT_BOOKED_SUCCESSFULLY: "Your Appointment Booked Successfully!",
+    LOGIN: "LOGIN",
+    REGISTER: "REGISTER",
+    SIGN_UP: "SIGN UP",
+    LOGIN_REQUIRED: "LOGIN REQUIRED",
   },
   DESCRIPTIONS: {
     FAQ: "Here are some answers to popular questions about our brand and products.  Looking to get in touch or have other questions not listed?",
     BOOKING_INFO_IN_YOUR_EMAIL:
       "We have sent your booking information to your email address",
+    LOGIN_TO_CONTINUE:
+      "You need to be logged in to proceed with this action. Please log in to your account to continue booking your appointment.",
   },
   LABELS: {
     ENTER_PASSCODE: "Enter Passcode",
@@ -52,12 +58,20 @@ export const APP_CONSTANTS = {
     EXPIRATION_DATE: "Expiration Date",
     CVV: "CVV",
     SET_AS_DEFAULT_PAYMENT_METHOD: "Set as your default payment method",
+    ENTER_EMAIL: "Enter email",
+    ENTER_PASSWORD: "Enter Password",
+    DONT_HAVE_AN_ACCOUNT: "Don't have an account?",
+    ALREADY_HAVE_AN_ACCOUNT: "Already have an account?",
+    FIRST_NAME: "First Name",
+    LAST_NAME: "Last Name",
   },
   PLACEHOLDERS: {
     TYPE_MESSAGE_HERE: "Type a message here...",
     ENTER_PASSWORD: "Enter Password",
     ENTER_EMAIL: "Enter email",
     GYM: "Gym",
+    LOADING: "Loading...",
+    PLEASE_WAIT: "Please wait...",
   },
   BUTTONS: {
     BOOK_NOW: "Book Now",
@@ -70,6 +84,9 @@ export const APP_CONSTANTS = {
     PAY: "Pay",
     SUBMIT: "Submit",
     CLOSE: "Close",
+    LOGIN: "Log in",
+    REGISTER: "Register",
+    LOGOUT: "Log out",
   },
   ERROR: {
     UNAUTHORIZED: {

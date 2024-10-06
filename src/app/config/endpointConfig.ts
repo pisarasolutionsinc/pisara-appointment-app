@@ -31,6 +31,7 @@ export const API_ENDPOINTS = {
   PROJECT: {
     GET_ALL: "/project/get/all",
     GET_BY_ID: "/project/get/:id",
+    GET_LATEST: "/project/get/latest",
     CREATE: "/project/create",
     UPDATE: "/project/update",
     REMOVE_BY_ID: "/project/remove/:id",

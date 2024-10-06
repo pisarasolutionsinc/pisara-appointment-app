@@ -4,7 +4,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { APP_CONSTANTS } from "../../../config/config";
 
 interface GalleryProps {
-  images: string[]; // Array of image URLs
+  images: string[]; 
 }
 
 const Gallery = ({ images }: GalleryProps) => {
@@ -26,6 +26,10 @@ const Gallery = ({ images }: GalleryProps) => {
     (currentIndex + 2) % images.length,
   ];
 
+  const handleImageClick = (index: number) => {
+    setCurrentIndex(index);
+  };
+
   return (
     <>
       {/* Main Image Gallery */}
@@ -46,14 +50,15 @@ const Gallery = ({ images }: GalleryProps) => {
           className="flex-grow w-[300px] h-[70vh] md:h-[80vh] object-cover rounded-xl shadow-lg transition-transform duration-500 ease-in-out transform hover:scale-105" // Added transition for smooth scale effect
         />
 
-        {/* Small Images with Transition */}
+        {/* Small Images with Click Event */}
         <div className="flex gap-5">
           {smallImageIndexes.map((index) => (
             <img
               key={index}
               src={images[index]}
               alt={`Image ${index + 1}`}
-              className="w-[150px] flex-grow object-cover rounded-xl shadow-md transition-transform duration-500 ease-in-out transform hover:scale-105" // Smooth transition and hover scale effect
+              className="w-[150px] flex-grow object-cover rounded-xl shadow-md transition-transform duration-500 ease-in-out transform hover:scale-105 cursor-pointer" // Added cursor-pointer for click interaction
+              onClick={() => handleImageClick(index)} 
             />
           ))}
         </div>

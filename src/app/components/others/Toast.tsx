@@ -25,7 +25,7 @@ const Toast = ({ message, type, onClose, positionClasses }: ToastProps) => {
 
   return (
     <div
-      className={`fixed mx-auto p-4 rounded shadow-lg ${getTypeStyles()} ${positionClasses}`}
+      className={`fixed mx-auto p-4 rounded shadow-lg z-40 ${getTypeStyles()} ${positionClasses}`}
     >
       <div className="flex justify-between items-center">
         <span>{message}</span>

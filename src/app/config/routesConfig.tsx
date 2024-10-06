@@ -12,6 +12,8 @@ export const routeConfig = {
       path: "/faqs",
       element: <FAQpage />,
     },
+  ],
+  PROTECTED: [
     {
       path: "/appointment",
       element: <AppointmentPage />,

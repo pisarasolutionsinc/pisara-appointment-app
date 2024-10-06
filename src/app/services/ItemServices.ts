@@ -1,11 +1,31 @@
 import { API_ENDPOINTS } from "../config/endpointConfig";
 import { ItemModel } from "../models/ItemModel";
 import { ProjectModel } from "../models/ProjectModel";
+import { QueryBuilder } from "./QueryBuilder";
+
+const queryParams = new QueryBuilder()
+  .select([
+    "attachments",
+    "fields",
+    "comments",
+    "children",
+    "workflowId",
+    "number",
+    "assignees",
+  ])
+  .populate([
+    "assignees",
+    "fields.common.fieldId",
+    "fields.custom.fieldId",
+    "children",
+  ])
+  .sort("-createdAt")
+  .build(true);
 
 export const getAllItems = async (): Promise<ItemModel[]> => {
   try {
     const response = await fetch(
-      `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.ITEM.GET_ALL}`,
+      `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.ITEM.GET_ALL}?${queryParams}`,
       {
         method: "GET",
         headers: {
@@ -32,7 +52,7 @@ export const getItemById = async (id: string): Promise<ItemModel> => {
       `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.ITEM.GET_BY_ID.replace(
         ":id",
         id
-      )}}`,
+      )}?${queryParams}`,
       {
         method: "GET",
         headers: {
@@ -103,7 +123,7 @@ export const updateItem = async (itemData: ItemModel): Promise<ItemModel> => {
   }
 };
 
-export const deletetem = async (id: string): Promise<ItemModel> => {
+export const deleteItem = async (id: string): Promise<ItemModel> => {
   try {
     const response = await fetch(
       `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.ITEM.REMOVE_BY_ID.replace(
@@ -155,30 +175,32 @@ export const addChild = async (itemData: ItemModel): Promise<ItemModel> => {
   }
 };
 
-export const updateItemStatus = async (itemData: ItemModel): Promise<ItemModel> => {
-    try {
-      const response = await fetch(
-        `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.ITEM.MOVE_STATUS}`,
-        {
-          method: "PUT",
-          headers: {
-            "Contet-Type": "application/json",
-          },
-          body: JSON.stringify(itemData),
-        }
-      );
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+export const updateItemStatus = async (
+  itemData: ItemModel
+): Promise<ItemModel> => {
+  try {
+    const response = await fetch(
+      `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.ITEM.MOVE_STATUS}`,
+      {
+        method: "PUT",
+        headers: {
+          "Contet-Type": "application/json",
+        },
+        body: JSON.stringify(itemData),
       }
-  
-      const data: ItemModel = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error updating child item:", error);
-      throw error;
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  };
+
+    const data: ItemModel = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error updating child item:", error);
+    throw error;
+  }
+};
 
 export const getItemsByProjectId = async (
   projectId: ProjectModel
@@ -208,26 +230,26 @@ export const getItemsByProjectId = async (
 };
 
 export const searchItem = async (params: any): Promise<ItemModel[]> => {
-    try {
-      const response = await fetch(
-        `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.ITEM.ADD_CHILD}`,
-        {
-          method: "PUT",
-          headers: {
-            "Contet-Type": "application/json",
-          },
-          body: JSON.stringify(params),
-        }
-      );
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+  try {
+    const response = await fetch(
+      `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.ITEM.SEARCH}`,
+      {
+        method: "PUT",
+        headers: {
+          "Contet-Type": "application/json",
+        },
+        body: JSON.stringify(params),
       }
-  
-      const data: ItemModel[] = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error searching item:", error);
-      throw error;
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  };
+
+    const data: ItemModel[] = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error searching item:", error);
+    throw error;
+  }
+};
