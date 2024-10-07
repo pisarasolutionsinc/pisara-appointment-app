@@ -7,7 +7,7 @@ import { WorkflowModel } from "./WorkflowModel";
 
 export interface ProjectModel {
   _id: string;
-  owner: UserModel;
+  owner?: UserModel;
   name: string;
   description?: string;
   key?: string;
@@ -24,7 +24,7 @@ export interface ProjectModel {
   startDate?: string;
   endDate?: string;
   image?: string;
-  attachments: string;
+  attachments?: string;
   details?: {
     colors: {
       primary: string;
@@ -45,4 +45,10 @@ export interface ProjectModel {
   portal?: PortalModel[];
   board?: BoardModel;
   projectCounter?: number;
+
+  metadata?: {
+    branding: {
+      logo: any;
+    };
+  };
 }

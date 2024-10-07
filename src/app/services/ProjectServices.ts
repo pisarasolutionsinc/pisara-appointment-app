@@ -134,7 +134,8 @@ export const createProject = async (
 };
 
 export const updateProject = async (
-  projectData: ProjectModel
+  projectData: ProjectModel,
+  token: string
 ): Promise<ProjectModel> => {
   try {
     const response = await fetch(
@@ -143,6 +144,7 @@ export const updateProject = async (
         method: "PUT",
         headers: {
           "Contet-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(projectData),
       }

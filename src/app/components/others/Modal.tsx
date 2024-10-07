@@ -22,7 +22,7 @@ const Modal = ({ isOpen, onClose, children, title, className }: ModalProps) => {
 
         <div
           className={twMerge(
-            "relative w-full bg-light p-5 rounded-2xl space-y-5 overflow-auto max-h-[90vh]",
+            "relative w-full bg-white p-5 rounded-2xl space-y-5 overflow-auto max-h-[90vh]",
             className
           )}
         >

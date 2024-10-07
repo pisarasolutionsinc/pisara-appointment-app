@@ -64,6 +64,8 @@ export const APP_CONSTANTS = {
     ALREADY_HAVE_AN_ACCOUNT: "Already have an account?",
     FIRST_NAME: "First Name",
     LAST_NAME: "Last Name",
+    TITLE: "Title",
+    DESCRIPTION: "Description",
   },
   PLACEHOLDERS: {
     TYPE_MESSAGE_HERE: "Type a message here...",
@@ -87,6 +89,9 @@ export const APP_CONSTANTS = {
     LOGIN: "Log in",
     REGISTER: "Register",
     LOGOUT: "Log out",
+    CANCEL: "Cancel",
+    UPDATE: "Update",
+    EDIT: "Edit",
   },
   ERROR: {
     UNAUTHORIZED: {
@@ -463,16 +468,16 @@ export const FAQ_CONTENT = [
   },
 ];
 
-export const CLOUDINARY = {
-  CLOUD_NAME: "pisara-dev" || process.env.CLOUD_NAME,
-  UPLOAD_PRESET_UNASIGNED: "pisara-dev" || process.env.UPLOAD_PRESET_UNASIGNED,
-  DEFAULT_FOLDER: "pisara-app/" || process.env.DEFAULT_FOLDER,
-  API_KEY: "166187199846281" || process.env.API_KEY,
-  API_SECRET: "RMUJDULoCJ31xmIxvB5POe5641M" || process.env.API_SECRET,
-  IMAGE_UPLOAD_ENDPOINT:
-    "https://api.cloudinary.com/v1_1/pisara-dev/image/upload" ||
-    process.env.IMAGE_UPLOAD_ENDPOINT,
-  IMAGE_DESTROY_ENDPOINT:
-    "https://api.cloudinary.com/v1_1/pisara-dev/image/destroy" ||
-    process.env.IMAGE_DESTROY_ENDPOINT,
-};
+// export const CLOUDINARY = {
+//   CLOUD_NAME: process.env.CLOUD_NAME || "pisara-dev",
+//   UPLOAD_PRESET_UNASIGNED: process.env.UPLOAD_PRESET_UNASIGNED || "pisara-dev",
+//   DEFAULT_FOLDER: process.env.DEFAULT_FOLDER || "pisara-app/",
+//   API_KEY: process.env.API_KEY || "166187199846281",
+//   API_SECRET: process.env.API_SECRET || "RMUJDULoCJ31xmIxvB5POe5641M",
+//   IMAGE_UPLOAD_ENDPOINT:
+//     process.env.IMAGE_UPLOAD_ENDPOINT ||
+//     "https://api.cloudinary.com/v1_1/pisara-dev/image/upload",
+//   IMAGE_DESTROY_ENDPOINT:
+//     process.env.IMAGE_DESTROY_ENDPOINT ||
+//     "https://api.cloudinary.com/v1_1/pisara-dev/image/destroy",
+// };
