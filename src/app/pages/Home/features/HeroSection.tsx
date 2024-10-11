@@ -12,6 +12,7 @@ import TextAreaForm from "../../../components/forms/TextAreaForm";
 import { ProjectModel } from "../../../models/ProjectModel";
 import FileImport from "../../../components/forms/FileImport";
 import { FaImage } from "react-icons/fa6";
+import { useToast } from "../../../contexts/ToastProvider";
 
 interface HeroSectionProps {
   scrollToSchedule: () => void;
@@ -22,6 +23,7 @@ const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
   const authContext = useContext(AuthContext);
   const user = authContext?.user;
   const { isOpen, openModal, closeModal } = useModal();
+  const { showToast } = useToast();
   const [projectData, setProjectData] = useState<Partial<ProjectModel>>({
     name: "",
     description: "",
@@ -33,7 +35,6 @@ const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
         name: currentProject.name,
         description: currentProject.description,
       });
-      console.log("Modal opened with project data:", projectData);
     }
   }, [isOpen, currentProject]);
 
@@ -45,52 +46,31 @@ const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
       ...prevData,
       [name]: value,
     }));
-    console.log("Updated projectData:", { ...projectData, [name]: value });
   };
 
   const handleUpdateProject = async () => {
-    const newErrors = {} as { name?: string; description?: string };
-
-    console.log("Project Data before update:", projectData);
-
     if (!projectData.name) {
-      console.error("Name is required");
+      showToast("Name is required.", "error", "top-20 right-10");
       return;
-    }
-    if (!projectData.description) {
-      newErrors.description = "Fill all required fields";
     }
 
-    if (Object.keys(newErrors).length > 0) {
-      console.error("Validation Errors:", newErrors);
-      return;
-    }
-    if (!currentProject?._id) {
-      console.error("Project ID is required for update.");
-      return;
-    }
+    const updatedProject: ProjectModel = {
+      _id: currentProject!._id,
+      owner: currentProject!.owner,
+      name: projectData.name,
+      description: projectData.description || "",
+
+      key: currentProject!.key,
+    };
 
     try {
-      const updatedProject: ProjectModel = {
-        _id: projectData._id!,
-        owner: projectData.owner,
-        name: projectData.name || currentProject.name,
-        description: projectData.description || currentProject.description,
-        // attachments: currentProject.attachments,
-        // metadata: currentProject.metadata,
-      };
       await updateProject(updatedProject);
       closeModal();
     } catch (error) {
-      console.error("Error updating project:", error);
+      console.error("Update failed:", error);
+      showToast("Failed to update project.", "error", "top-20 right-10");
     }
   };
-
-  console.log("Payload for API:", {
-    _id: currentProject?._id,
-    name: projectData.name,
-    description: projectData.description,
-  });
 
   return (
     <>
@@ -135,11 +115,11 @@ const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
           className="w-1/2"
           isOpen={isOpen}
           onClose={closeModal}
-          title="Edit Hero Section"
+          title={APP_CONSTANTS.TITLES.EDIT_HERO_SECTION}
         >
           <section className="space-y-5">
             <div className="space-y-2">
-              <label>{APP_CONSTANTS.LABELS.TITLE}</label>
+              <label className="text-black">{APP_CONSTANTS.LABELS.TITLE}</label>
               <InputForm
                 name="name"
                 value={projectData.name}
@@ -147,14 +127,20 @@ const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
               />
             </div>
             <div className="space-y-2">
-              <label>{APP_CONSTANTS.LABELS.DESCRIPTION}</label>
+              <label className="text-black">
+                {APP_CONSTANTS.LABELS.DESCRIPTION}
+              </label>
               <TextAreaForm
                 name="description"
                 value={projectData.description}
                 onChange={handleInputChange}
+                maxLength={250}
               />
             </div>
-            <div>
+            <div className="space-y-2">
+              <p className="text-black">
+                {APP_CONSTANTS.LABELS.BACKGROUND_IMAGE}
+              </p>
               <FileImport className="bg-white" icon={<FaImage />} />
             </div>
           </section>

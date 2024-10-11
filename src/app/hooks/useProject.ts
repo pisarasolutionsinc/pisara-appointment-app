@@ -8,6 +8,7 @@ import { ProjectModel } from "../models/ProjectModel";
 import { AuthContext } from "../contexts/AuthContext";
 
 const useProject = () => {
+  const projectID = "67039738e07641359d3992f5";
   const [currentProject, setCurrentProject] = useState<ProjectModel | null>(
     null
   );
@@ -24,10 +25,7 @@ const useProject = () => {
       setError(null);
 
       try {
-        const project = await getProjectById(
-          "67039738e07641359d3992f5",
-          authContext.token
-        );
+        const project = await getProjectById(projectID, authContext.token);
         setCurrentProject(project);
       } catch (error) {
         console.error("Failed fetching project:", error);
@@ -43,7 +41,7 @@ const useProject = () => {
     };
 
     fetchCurrentProject();
-  }, [authContext?.token]);
+  }, [authContext?.token, projectID]);
 
   const updateProject = async (projectData: ProjectModel) => {
     if (!authContext?.token) {

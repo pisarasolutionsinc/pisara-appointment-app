@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { WEBAPP } from "./app/config/config";
 import SplashScreen from "./app/components/others/SplashScreen";
 import { ColorProvider } from "./app/contexts/ColorContext";
@@ -9,7 +9,10 @@ const Router = lazy(() => import("./app/routes/Router"));
 
 function App() {
   const { currentProject } = useProject();
-  setTitle(currentProject?.name || WEBAPP.NAME);
+
+  useEffect(() => {
+    setTitle(currentProject?.name || WEBAPP.NAME);
+  }, [currentProject]);
 
   return (
     <>

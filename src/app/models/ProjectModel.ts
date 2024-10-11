@@ -1,13 +1,13 @@
 import { BoardModel } from "./BoardModel";
 import { FieldModel } from "./FieldModel";
-import { ItemModel } from "./ItemModel";
+import { ItemTypeModel } from "./ItemTypeModel";
 import { PortalModel } from "./PortalModel";
 import { UserModel } from "./UserModel";
 import { WorkflowModel } from "./WorkflowModel";
 
 export interface ProjectModel {
   _id: string;
-  owner?: UserModel;
+  owner: UserModel;
   name: string;
   description?: string;
   key?: string;
@@ -38,7 +38,7 @@ export interface ProjectModel {
     permissions: "read" | "write" | "delete";
   }[];
   itemTypes?: {
-    type: ItemModel;
+    type: ItemTypeModel;
     fields: FieldModel[];
     workflow: WorkflowModel;
   }[];

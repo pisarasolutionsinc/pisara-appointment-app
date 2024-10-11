@@ -34,7 +34,7 @@ export const getAllProjects = async (): Promise<ProjectModel[]> => {
       {
         method: "GET",
         headers: {
-          "Contet-Type": "application/json",
+          "Content-Type": "application/json",
         },
       }
     );
@@ -89,7 +89,7 @@ export const getLatestProject = async (): Promise<ProjectModel> => {
       {
         method: "GET",
         headers: {
-          "Contet-Type": "application/json",
+          "Content-Type": "application/json",
         },
       }
     );
@@ -115,7 +115,7 @@ export const createProject = async (
       {
         method: "POST",
         headers: {
-          "Contet-Type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(projectData),
       }
@@ -143,7 +143,7 @@ export const updateProject = async (
       {
         method: "PUT",
         headers: {
-          "Contet-Type": "application/json",
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(projectData),
@@ -172,7 +172,7 @@ export const deleteProject = async (id: string): Promise<ProjectModel> => {
       {
         method: "DELETE",
         headers: {
-          "Contet-Type": "application/json",
+          "Content-Type": "application/json",
         },
       }
     );
@@ -196,7 +196,7 @@ export const searchProject = async (params: any): Promise<ProjectModel[]> => {
       {
         method: "PUT",
         headers: {
-          "Contet-Type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(params),
       }

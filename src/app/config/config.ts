@@ -40,6 +40,9 @@ export const APP_CONSTANTS = {
     REGISTER: "REGISTER",
     SIGN_UP: "SIGN UP",
     LOGIN_REQUIRED: "LOGIN REQUIRED",
+    EDIT_HERO_SECTION: "Edit Hero Section",
+    EDIT_SERVICE_SECTION: "Edit Service Section",
+    ADD_SERVICE: "Add Service",
   },
   DESCRIPTIONS: {
     FAQ: "Here are some answers to popular questions about our brand and products.  Looking to get in touch or have other questions not listed?",
@@ -66,6 +69,8 @@ export const APP_CONSTANTS = {
     LAST_NAME: "Last Name",
     TITLE: "Title",
     DESCRIPTION: "Description",
+    BACKGROUND_IMAGE: "Background Image",
+    SERVICE: "Service",
   },
   PLACEHOLDERS: {
     TYPE_MESSAGE_HERE: "Type a message here...",
@@ -74,6 +79,9 @@ export const APP_CONSTANTS = {
     GYM: "Gym",
     LOADING: "Loading...",
     PLEASE_WAIT: "Please wait...",
+    ADD_SERVICE: "Add Service",
+    ENTER_SERVICE: "Enter Service",
+    ENTER_DESCRIPTION: "Enter Description",
   },
   BUTTONS: {
     BOOK_NOW: "Book Now",
@@ -92,6 +100,7 @@ export const APP_CONSTANTS = {
     CANCEL: "Cancel",
     UPDATE: "Update",
     EDIT: "Edit",
+    ADD: "Add",
   },
   ERROR: {
     UNAUTHORIZED: {
@@ -116,6 +125,14 @@ export const APP_CONSTANTS = {
     HAVE_MEDICAL_CONDITION: "Do you have any medical condition?",
     HAVE_FAMILY_HISTORY_OF_MEDICAL_CONDITION:
       "Do you have any family history of medical condition?",
+  },
+  HEADER: {
+    KEY: {
+      CONTENT_TYPE: "Content-Type",
+    },
+    VALUE: {
+      APPLICATION_JSON: "application/json",
+    },
   },
 };
 

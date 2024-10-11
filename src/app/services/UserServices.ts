@@ -32,7 +32,7 @@ export const getAllUser = async (): Promise<UserModel[]> => {
       {
         method: "GET",
         headers: {
-          "Contet-Type": "application/json",
+          "Content-Type": "application/json",
         },
       }
     );
@@ -152,7 +152,7 @@ export const loginUser = async (credentials: {
   }
 };
 
-export const logoutUser = async (): Promise<void> => {
+export const logoutUser = async (token: string): Promise<void> => {
   try {
     const response = await fetch(
       `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.USER.LOGOUT}`,
@@ -160,6 +160,7 @@ export const logoutUser = async (): Promise<void> => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         credentials: "include",
       }

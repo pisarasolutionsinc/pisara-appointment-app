@@ -1,7 +1,7 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
 import { UserModel } from "../models/UserModel";
 import { loginUser, logoutUser } from "../services/UserServices";
-import { uselocalStorage } from "../hooks/useLocalStorage";
+import { getLocal, removeLocal, saveLocal } from "../hooks/useLocalStorage";
 
 interface AuthContextType {
   user: UserModel | null;
@@ -23,18 +23,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<UserModel | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const { savelocal, getlocal, removelocal } = uselocalStorage();
 
   useEffect(() => {
-    const storedUser = getlocal("user");
-    const storedToken = getlocal("token");
+    const storedUser = getLocal("user");
+    const storedToken = getLocal("token");
 
     if (storedUser && storedToken) {
       setUser(storedUser);
       setToken(storedToken);
     }
     setLoading(false);
-  }, [getlocal]);
+  }, [getLocal]);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
@@ -44,8 +43,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (loggedInUser && token) {
         setUser(loggedInUser);
         setToken(token);
-        savelocal("user", loggedInUser);
-        savelocal("token", token);
+        saveLocal("user", loggedInUser);
+        saveLocal("token", token);
         return true;
       } else {
         console.error("Login failed: User or token is missing");
@@ -58,15 +57,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = async () => {
+    if (!token) return;
     try {
-      await logoutUser();
+      await logoutUser(token);
     } catch (error) {
       console.error("Error during logout:", error);
     } finally {
       setUser(null);
       setToken(null);
-      removelocal("user");
-      removelocal("token");
+      removeLocal("user");
+      removeLocal("token");
     }
   };
 
