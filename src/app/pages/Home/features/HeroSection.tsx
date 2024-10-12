@@ -1,7 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import Button from "../../../components/buttons/Button";
 import { APP_CONSTANTS, WEBAPP } from "../../../config/config";
-import { PLACEHOLDERS } from "../../../config/placeholderImg";
 import useProject from "../../../hooks/useProject";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { MdModeEdit } from "react-icons/md";
@@ -13,13 +12,21 @@ import { ProjectModel } from "../../../models/ProjectModel";
 import FileImport from "../../../components/forms/FileImport";
 import { FaImage } from "react-icons/fa6";
 import { useToast } from "../../../contexts/ToastProvider";
+import { IoIosClose } from "react-icons/io";
+import { useFileUpload } from "../../../hooks/useFileUpload";
+import { getLatestImageUrl } from "../../../utils/common";
+import Loading from "../../../components/others/Loading";
 
 interface HeroSectionProps {
   scrollToSchedule: () => void;
 }
 
 const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
-  const { currentProject, updateProject } = useProject();
+  const [hasBackgroundImage, setHasBackgroundImage] = useState<string | null>(
+    null
+  );
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const { currentProject, updateProject, loading } = useProject();
   const authContext = useContext(AuthContext);
   const user = authContext?.user;
   const { isOpen, openModal, closeModal } = useModal();
@@ -28,6 +35,7 @@ const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
     name: "",
     description: "",
   });
+  const { uploadFile } = useFileUpload();
 
   useEffect(() => {
     if (isOpen && currentProject) {
@@ -35,6 +43,10 @@ const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
         name: currentProject.name,
         description: currentProject.description,
       });
+      const latestImageUrl = getLatestImageUrl(
+        currentProject.attachments || []
+      );
+      setHasBackgroundImage(latestImageUrl);
     }
   }, [isOpen, currentProject]);
 
@@ -48,6 +60,27 @@ const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
     }));
   };
 
+  const handleFileUpload = (files: File | File[]) => {
+    if (Array.isArray(files)) {
+      if (files.length > 0) {
+        handleSingleFileUpload(files[0]);
+      }
+    } else {
+      handleSingleFileUpload(files);
+    }
+  };
+
+  const handleSingleFileUpload = (file: File) => {
+    const imageUrl = URL.createObjectURL(file);
+    setHasBackgroundImage(imageUrl);
+    setUploadedFile(file);
+  };
+
+  const clearBackgroundImage = () => {
+    setHasBackgroundImage(null);
+    setUploadedFile(null);
+  };
+
   const handleUpdateProject = async () => {
     if (!projectData.name) {
       showToast("Name is required.", "error", "top-20 right-10");
@@ -59,11 +92,19 @@ const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
       owner: currentProject!.owner,
       name: projectData.name,
       description: projectData.description || "",
-
+      attachments: currentProject?.attachments || [],
       key: currentProject!.key,
     };
 
     try {
+      if (uploadedFile) {
+        const result = await uploadFile(
+          uploadedFile,
+          `project/${currentProject?._id}/images`
+        );
+        updatedProject.attachments?.push(result.secure_url);
+        setHasBackgroundImage(result.secure_url);
+      }
       await updateProject(updatedProject);
       closeModal();
     } catch (error) {
@@ -72,11 +113,15 @@ const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
     }
   };
 
+  const backgroundImageUrl = getLatestImageUrl(
+    currentProject?.attachments || []
+  );
+
   return (
     <>
       <div className="relative h-screen w-full overflow-hidden">
         <img
-          src={PLACEHOLDERS.GYM}
+          src={backgroundImageUrl}
           alt={APP_CONSTANTS.PLACEHOLDERS.GYM}
           className="w-full h-full md:object-cover"
         />
@@ -110,9 +155,10 @@ const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
           </div>
         </section>
       </div>
+
       {isOpen && (
         <Modal
-          className="w-1/2"
+          className="md:w-2/3 2xl:w-1/2"
           isOpen={isOpen}
           onClose={closeModal}
           title={APP_CONSTANTS.TITLES.EDIT_HERO_SECTION}
@@ -141,7 +187,30 @@ const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
               <p className="text-black">
                 {APP_CONSTANTS.LABELS.BACKGROUND_IMAGE}
               </p>
-              <FileImport className="bg-white" icon={<FaImage />} />
+
+              {hasBackgroundImage ? (
+                <div className="relative">
+                  <Button
+                    className="absolute top-4 right-4 p-0 rounded-full text-white bg-neutral"
+                    onClick={clearBackgroundImage}
+                    ariaLabel={APP_CONSTANTS.BUTTONS.CANCEL}
+                  >
+                    <IoIosClose className="text-5xl" />
+                  </Button>
+                  <img
+                    src={hasBackgroundImage}
+                    alt="Background preview"
+                    className="w-full h-auto"
+                  />
+                </div>
+              ) : (
+                <FileImport
+                  className="bg-white"
+                  icon={<FaImage />}
+                  onFileUpload={handleFileUpload}
+                  accept="image/*"
+                />
+              )}
             </div>
           </section>
           <hr />
@@ -154,11 +223,16 @@ const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
               {APP_CONSTANTS.BUTTONS.CANCEL}
             </Button>
             <Button
-              className="text-white bg-primary"
+              className={`text-white ${loading ? "bg-neutral" : "bg-primary"}`}
               onClick={handleUpdateProject}
               ariaLabel={APP_CONSTANTS.BUTTONS.UPDATE}
+              disable={loading}
             >
-              {APP_CONSTANTS.BUTTONS.UPDATE}
+              {loading ? (
+                <Loading text={APP_CONSTANTS.PLACEHOLDERS.LOADING} />
+              ) : (
+                APP_CONSTANTS.BUTTONS.UPDATE
+              )}
             </Button>
           </section>
         </Modal>

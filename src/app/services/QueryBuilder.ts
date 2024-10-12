@@ -1,46 +1,74 @@
 export class QueryBuilder {
-  private query: Record<string, any>;
+  query: string;
 
   constructor() {
-    this.query = {};
+    this.query = "";
   }
 
-  // Add fields to select
-  select(fields: string[]): this {
-    this.query.select = fields.join(" ");
-    return this;
-  }
-
-  // Add sorting options
-  sort(fields: string | string[]): this {
-    this.query.sort = Array.isArray(fields) ? fields.join(" ") : fields;
-    return this;
-  }
-
-  // Set the limit for results
-  limit(count: number): this {
-    this.query.limit = count;
-    return this;
-  }
-
-  // Add population options
-  populate(fields: string[]): this {
-    this.query.populate = fields.join(" ");
-    return this;
-  }
-
-  // Add any other custom query params
-  setParam(key: string, value: any): this {
-    this.query[key] = value;
-    return this;
-  }
-
-  // Get the query object or query string
-  build(asString: boolean = false): string | Record<string, any> {
-    if (asString) {
-      const params = new URLSearchParams(this.query);
-      return params.toString();
+  // Private method to append to query
+  #appendToQuery(query: string) {
+    if (this.query === "") {
+      this.query = `?${query}`;
+    } else {
+      this.query += `&${query}`;
     }
-    return this.query;
+  }
+
+  buildSearchBody(
+    queryKey: any,
+    populateArray: string[],
+    sort: string,
+    skip: number,
+    select: string[],
+    limit: number,
+    lean: boolean
+  ) {
+    return {
+      query: queryKey,
+      populateArray: populateArray,
+      sort: sort,
+      skip: skip,
+      select: select.join(" "),
+      limit: limit,
+      lean: lean,
+    };
+  }
+
+  select(selectArray: string[]) {
+    selectArray.forEach((select) => this.#appendToQuery(`select=${select}`));
+    return this; // Return this for chaining
+  }
+
+  populate(populateArray: { path: string; select?: string }[]) {
+    populateArray.forEach((populate, index) => {
+      if ("path" in populate) {
+        this.#appendToQuery(`populateArray[${index}][path]=${populate.path}`);
+      }
+      if ("select" in populate) {
+        this.#appendToQuery(
+          `populateArray[${index}][select]=${populate.select}`
+        );
+      }
+    });
+    return this; // Return this for chaining
+  }
+
+  sort(sort: string) {
+    this.#appendToQuery(`sort=${sort}`);
+    return this; // Return this for chaining
+  }
+
+  limit(limit: number) {
+    this.#appendToQuery(`limit=${limit}`);
+    return this; // Return this for chaining
+  }
+
+  page(page: number) {
+    this.#appendToQuery(`page=${page}`);
+    return this; // Return this for chaining
+  }
+
+  resetQuery() {
+    this.query = ""; // Resets the query for future use
   }
 }
