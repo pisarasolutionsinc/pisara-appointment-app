@@ -43,6 +43,8 @@ export const APP_CONSTANTS = {
     EDIT_HERO_SECTION: "Edit Hero Section",
     EDIT_SERVICE_SECTION: "Edit Service Section",
     ADD_SERVICE: "Add Service",
+    EDIT_GALLERY_SECTION: "Edit Gallery Section",
+    DELETE_IMAGE: "Delete this image?",
   },
   DESCRIPTIONS: {
     FAQ: "Here are some answers to popular questions about our brand and products.  Looking to get in touch or have other questions not listed?",
@@ -101,6 +103,9 @@ export const APP_CONSTANTS = {
     UPDATE: "Update",
     EDIT: "Edit",
     ADD: "Add",
+    MANAGE: "Manage",
+    SAVE: "Save",
+    REMOVE: "Remove",
   },
   ERROR: {
     UNAUTHORIZED: {
@@ -484,6 +489,18 @@ export const FAQ_CONTENT = [
     ],
   },
 ];
+
+export const CLOUDINARY = {
+  CLOUD_NAME: "pisara-dev",
+  UPLOAD_PRESET_UNASIGNED: "pisara-dev",
+  DEFAULT_FOLDER: "pisara-app/",
+  API_KEY: "166187199846281",
+  API_SECRET: "RMUJDULoCJ31xmIxvB5POe5641M",
+  IMAGE_UPLOAD_ENDPOINT:
+    "https://api.cloudinary.com/v1_1/pisara-dev/image/upload",
+  IMAGE_DESTROY_ENDPOINT:
+    "https://api.cloudinary.com/v1_1/pisara-dev/image/destroy",
+};
 
 // export const CLOUDINARY = {
 //   CLOUD_NAME: process.env.CLOUD_NAME || "pisara-dev",

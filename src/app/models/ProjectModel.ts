@@ -24,7 +24,7 @@ export interface ProjectModel {
   startDate?: string;
   endDate?: string;
   image?: string;
-  attachments?: string;
+  attachments?: string[];
   details?: {
     colors: {
       primary: string;

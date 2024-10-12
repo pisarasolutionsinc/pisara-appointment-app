@@ -2,35 +2,38 @@ import { API_ENDPOINTS } from "../config/endpointConfig";
 import { ProjectModel } from "../models/ProjectModel";
 import { QueryBuilder } from "./QueryBuilder";
 
-const queryParams = new QueryBuilder()
-  .select([
-    "name",
-    "key",
-    "details",
-    "owner",
-    "description",
-    "image",
-    "itemTypes.type",
-    "members",
-    "startDate",
-    "endDate",
-  ])
-  .populate([
-    "owner",
-    "itemTypes.workflow",
-    "itemTypes.fields",
-    "itemTypes.type",
-    "owner",
-    "members.userId",
-    "board",
-  ])
-  .sort("-createdAt")
-  .build(true);
+const createQueryParams = () => {
+  return new QueryBuilder()
+    .select([
+      "name",
+      "key",
+      "details",
+      "owner",
+      "description",
+      "image",
+      "itemTypes",
+      "attachments",
+      "members",
+      "startDate",
+      "endDate",
+    ])
+    .populate([
+      { path: "owner" },
+      { path: "itemTypes.workflow" },
+      { path: "itemTypes.fields" },
+      { path: "itemTypes.type" },
+      { path: "members.userId" },
+      { path: "board" },
+    ])
+    .sort("-createdAt");
+};
+
+const queryParams = createQueryParams();
 
 export const getAllProjects = async (): Promise<ProjectModel[]> => {
   try {
     const response = await fetch(
-      `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.PROJECT.GET_ALL}?${queryParams}`,
+      `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.PROJECT.GET_ALL}${queryParams.query}`,
       {
         method: "GET",
         headers: {
@@ -60,7 +63,7 @@ export const getProjectById = async (
       `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.PROJECT.GET_BY_ID.replace(
         ":id",
         id
-      )}?${queryParams}`,
+      )}${queryParams.query}`,
       {
         method: "GET",
         headers: {
@@ -85,7 +88,7 @@ export const getProjectById = async (
 export const getLatestProject = async (): Promise<ProjectModel> => {
   try {
     const response = await fetch(
-      `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.PROJECT.GET_LATEST}?${queryParams}`,
+      `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.PROJECT.GET_LATEST}${queryParams.query}`,
       {
         method: "GET",
         headers: {
@@ -168,7 +171,7 @@ export const deleteProject = async (id: string): Promise<ProjectModel> => {
       `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.PROJECT.REMOVE_BY_ID.replace(
         ":id",
         id
-      )}}`,
+      )}`,
       {
         method: "DELETE",
         headers: {

@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { APP_CONSTANTS, WEBAPP } from "../../config/config";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
-import { getDisplayName } from "../../utils/common";
+import { getDisplayName, getUserInitials } from "../../utils/common";
 import Button from "../buttons/Button";
 import { useToast } from "../../contexts/ToastProvider";
 import LinkButton from "../buttons/LinkButton";
@@ -57,7 +57,10 @@ const Header = () => {
           ) : (
             <>
               <div className="relative">
-                <div className="flex gap-2">
+                <div className="flex items-center gap-3">
+                  <p className="text-white bg-primary p-2 rounded-full">
+                    {getUserInitials(user)}
+                  </p>
                   <p className="text-black">{getDisplayName(user)}</p>
                   <Button className="p-1" onClick={togglePanel}>
                     <IoIosArrowDown
@@ -68,12 +71,13 @@ const Header = () => {
                   </Button>
                 </div>
                 {isPanelOpen && (
-                  <div className="absolute top-7 right-0 bg-white w-fit border rounded-xl p-3 space-y-3">
+                  <div className="absolute top-11 right-0 bg-white w-fit border rounded-xl p-3 space-y-3">
                     <p className="font-semibold text-black">{user.email}</p>
                     <hr />
                     <Button
                       className="px-0 w-full text-start py-1"
                       onClick={handleLogout}
+                      ariaLabel={APP_CONSTANTS.BUTTONS.LOGOUT}
                     >
                       {APP_CONSTANTS.BUTTONS.LOGOUT}
                     </Button>

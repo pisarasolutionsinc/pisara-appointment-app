@@ -24,7 +24,6 @@ const ServicesSection = () => {
     img: PLACEHOLDERS.GYM,
   });
 
-  // Check if services are less than 9
   const canAddMoreServices = services.length < 9;
 
   return (

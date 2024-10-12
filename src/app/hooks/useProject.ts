@@ -53,11 +53,16 @@ const useProject = () => {
     setError(null);
 
     try {
+      // This is the service call to update the project
       const updatedProject = await updateProjectService(
         projectData,
         authContext.token
       );
+
+      // Update the state with the new project data
       setCurrentProject(updatedProject);
+
+      // Show success toast
       showToast("Project updated successfully.", "success", "top-20 right-10");
     } catch (error) {
       console.error("Failed updating project:", error);

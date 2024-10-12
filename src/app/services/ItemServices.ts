@@ -3,29 +3,32 @@ import { ItemModel } from "../models/ItemModel";
 import { ProjectModel } from "../models/ProjectModel";
 import { QueryBuilder } from "./QueryBuilder";
 
-const queryParams = new QueryBuilder()
-  .select([
-    "attachments",
-    "fields",
-    "comments",
-    "children",
-    "workflowId",
-    "number",
-    "assignees",
-  ])
-  .populate([
-    "assignees",
-    "fields.common.fieldId",
-    "fields.custom.fieldId",
-    "children",
-  ])
-  .sort("-createdAt")
-  .build(true);
+const createQueryParams = () => {
+  return new QueryBuilder()
+    .select([
+      "attachments",
+      "fields",
+      "comments",
+      "children",
+      "workflowId",
+      "number",
+      "assignees",
+    ])
+    .populate([
+      { path: "assignees" },
+      { path: "fields.common.fieldId" },
+      { path: "fields.custom.fieldId" },
+      { path: "children" },
+    ])
+    .sort("-createdAt");
+};
+
+const queryParams = createQueryParams();
 
 export const getAllItems = async (): Promise<ItemModel[]> => {
   try {
     const response = await fetch(
-      `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.ITEM.GET_ALL}?${queryParams}`,
+      `${API_ENDPOINTS.BASEURL}${API_ENDPOINTS.ITEM.GET_ALL}${queryParams.query}`,
       {
         method: "GET",
         headers: {
