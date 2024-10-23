@@ -25,7 +25,7 @@ export const ColorProvider: React.FC<{ children: React.ReactNode }> = ({
     neutral: "#9c9c9c",
     success: "#D3FFA6",
     warning: "#FFFAA6",
-    danger: "#FFA6BA",
+    danger: "#8C0106",
   };
 
   const [colors, setColors] = useState<Colors>({

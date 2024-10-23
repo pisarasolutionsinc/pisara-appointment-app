@@ -10,18 +10,18 @@ const GetInTouchSection = () => {
           <h1 className="text-5xl font-bold text-primary">
             {APP_CONSTANTS.TITLES.GET_IN_TOUCH}
           </h1>
-          <hr className="border-primary"/>
+          <hr className="border-primary" />
           <section className="space-y-5 text-xl">
             <div className="flex items-center gap-5">
-              <FaLocationDot className="text-primary"/>
+              <FaLocationDot className="text-primary" />
               <p>{WEBAPP.ADDRESS}</p>
             </div>
             <div className="flex items-center gap-5">
-              <FaPhone className="text-primary"/>
+              <FaPhone className="text-primary" />
               <p>{WEBAPP.CONTACT_NUMBER}</p>
             </div>
             <div className="flex items-center gap-5">
-              <MdEmail className="text-primary"/>
+              <MdEmail className="text-primary" />
               <p>{WEBAPP.EMAIL}</p>
             </div>
           </section>

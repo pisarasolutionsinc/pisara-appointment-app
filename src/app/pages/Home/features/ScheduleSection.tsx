@@ -1,43 +1,27 @@
-import React, { useState, useContext } from "react";
 import InputForm from "../../../components/forms/InputForm";
 import { APP_CONSTANTS, WEBAPP } from "../../../config/config";
 import HorizontalCalendar from "../../../components/others/HorizontalCalendar";
-import { useNavigate } from "react-router-dom";
 import Button from "../../../components/buttons/Button";
-import { AuthContext } from "../../../contexts/AuthContext";
 import Modal from "../../../components/others/Modal";
 import LinkButton from "../../../components/buttons/LinkButton";
+import AppointmentCard from "../../../components/cards/AppointmentCard";
+import { ItemModel } from "../../../models/ItemModel";
+import { formatISODateToReadable } from "../../../utils/common";
+import { Card } from "../../../components/cards/Card";
+import { getFieldValue } from "../../../utils/getFieldValue";
+import useScheduleSection from "../../../hooks/useScheduleSection";
 
 const ScheduleSection = () => {
-  const currentMonth = new Date().toISOString().slice(0, 7);
-  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const authContext = useContext(AuthContext);
-  const navigate = useNavigate();
-
-  const handleMonthChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const newMonth = event.target.value;
-    setSelectedMonth(newMonth);
-  };
-
-  const handleDaySelect = (day: string) => {
-    console.log("Selected Day:", day);
-    setSelectedMonth(day.slice(0, 7));
-  };
-
-  const handleBookNowClick = () => {
-    if (authContext?.user) {
-      navigate("/appointment");
-    } else {
-      setShowLoginModal(true);
-    }
-  };
-
-  const closeModal = () => {
-    setShowLoginModal(false);
-  };
+  const {
+    selectedMonth,
+    handleMonthChange,
+    currentMonth,
+    handleDaySelect,
+    classes,
+    handleBookNowClick,
+    isOpen,
+    closeModal,
+  } = useScheduleSection();
 
   return (
     <>
@@ -67,34 +51,100 @@ const ScheduleSection = () => {
             />
           </section>
 
-          <section className="bg-accent h-[70vh] p-5 rounded-lg overflow-auto">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 bg-secondary p-5 rounded-xl shadow-md">
-              <section>
-                <p className="font-bold">CLASS</p>
-                <p>INSTRUCTOR</p>
-              </section>
-              <section className="flex items-center divide-x-2 divide-primary">
-                <p className="pr-4 font-bold">Start Time</p>
-                <p className="pl-4">Duration</p>
-              </section>
-              <section>
-                <p className="font-bold">BUILDING</p>
-                <p>Address</p>
-              </section>
-              <section>10 slots left</section>
-              <Button
-                className="bg-primary text-white rounded-full"
-                onClick={handleBookNowClick}
-              >
-                {APP_CONSTANTS.BUTTONS.BOOK_NOW}
-              </Button>
-            </div>
+          <section className="bg-accent h-[70vh] p-5 rounded-lg overflow-auto space-y-3">
+            {classes.length > 0 ? (
+              classes.map((classItem: ItemModel) => (
+                <div key={classItem._id} className="space-y-3">
+                  {classItem.children?.map((child: ItemModel) => {
+                    const className = getFieldValue(
+                      child?.fields?.common!,
+                      APP_CONSTANTS.LABELS.TITLE
+                    );
+
+                    const startDateField = getFieldValue(
+                      child?.fields?.custom!,
+                      APP_CONSTANTS.LABELS.START_DATE
+                    );
+
+                    const startDate = formatISODateToReadable(startDateField);
+
+                    const time = getFieldValue(
+                      child?.fields?.custom!,
+                      APP_CONSTANTS.LABELS.TIME
+                    );
+
+                    const address = getFieldValue(
+                      child.fields?.custom!,
+                      APP_CONSTANTS.LABELS.ADDRESS
+                    );
+
+                    const slots = getFieldValue(
+                      child?.fields?.custom!,
+                      APP_CONSTANTS.LABELS.SLOTS
+                    );
+
+                    const instructor =
+                      child.assignees && child.assignees.length > 0
+                        ? child.assignees
+                            .map((assignee) => {
+                              return assignee.email || "No email Name";
+                            })
+                            .join(", ")
+                        : "No Instructors Assigned";
+
+                    return (
+                      <AppointmentCard
+                        key={child._id}
+                        appointmentCard={{
+                          class: className || APP_CONSTANTS.LABELS.NO_CLASS_SET,
+                          instructor:
+                            instructor ||
+                            APP_CONSTANTS.LABELS.NO_INSTRUCTOR_ASSIGNED,
+                          startDate:
+                            startDate || APP_CONSTANTS.LABELS.NO_DATE_SET,
+                          location:
+                            address || APP_CONSTANTS.LABELS.NO_ADDRESS_SET,
+                          time: time || APP_CONSTANTS.LABELS.NO_TIME_SET,
+                          slots:
+                            slots || APP_CONSTANTS.LABELS.NO_SLOT_NUMBER_SET,
+                        }}
+                        className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 bg-secondary p-5 rounded-xl shadow-md"
+                      >
+                        <div>
+                          <AppointmentCard.Class className="text-lg text-primary" />
+                          <AppointmentCard.Instructor className="text-primary font-semibold" />
+                        </div>
+                        <AppointmentCard.Time className="text-primary text-lg" />
+                        <AppointmentCard.Location className="text-primary font-semibold" />
+                        <AppointmentCard.Slots
+                          className={`font-semibold text-primary ${
+                            slots > 10 ? "text-primary" : "text-danger"
+                          }`}
+                        />
+                        <Button
+                          className="bg-primary text-white rounded-full"
+                          onClick={() => handleBookNowClick(child._id!)}
+                        >
+                          {APP_CONSTANTS.BUTTONS.BOOK_NOW}
+                        </Button>
+                      </AppointmentCard>
+                    );
+                  })}
+                </div>
+              ))
+            ) : (
+              <Card className="bg-primary">
+                <p className="text-white text-center text-2xl">
+                  {APP_CONSTANTS.LABELS.NO_CLASSES_AVAILABLE}
+                </p>
+              </Card>
+            )}
           </section>
         </div>
       </div>
-      {showLoginModal && (
+      {isOpen && (
         <Modal
-          isOpen={showLoginModal}
+          isOpen={isOpen}
           onClose={closeModal}
           className="w-full md:w-1/2 2xl:w-1/3 bg-secondary"
         >

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { createUser } from "../services/UserServices";
 import { UserModel } from "../models/UserModel";
 import { useToast } from "../contexts/ToastProvider";
+import { createUser } from "../services/UserService";
 
 interface UseCreateUserResponse {
   createUserHandler: (

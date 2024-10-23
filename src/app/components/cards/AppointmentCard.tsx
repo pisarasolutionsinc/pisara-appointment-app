@@ -1,5 +1,6 @@
 import { createContext, PropsWithChildren, useContext } from "react";
 import { twMerge } from "tailwind-merge";
+import { APP_CONSTANTS } from "../../config/config";
 
 type AppointmentCardContext = {
   appointmentCard?: AppointmentCardContents;
@@ -19,6 +20,12 @@ function useAppointmentCardContext() {
 
 interface AppointmentCardContents {
   image?: string;
+  class?: string;
+  instructor?: string;
+  startDate?: string;
+  time?: string;
+  location?: string;
+  slots?: number;
 }
 
 type AppointmentCardProps = PropsWithChildren & {
@@ -66,19 +73,48 @@ AppointmentCard.Image = function AppointmentCardImage({
   );
 };
 
+AppointmentCard.Class = function AppointmentCardTime({
+  className,
+}: {
+  className?: string;
+}) {
+  const { appointmentCard } = useAppointmentCardContext();
+  return (
+    <section className={twMerge("font-bold", className)}>
+      <p>{appointmentCard?.class}</p>
+    </section>
+  );
+};
+
+AppointmentCard.Instructor = function AppointmentCardTime({
+  className,
+}: {
+  className?: string;
+}) {
+  const { appointmentCard } = useAppointmentCardContext();
+  return (
+    <section className={twMerge("space-y-2", className)}>
+      <p>{appointmentCard?.instructor}</p>
+    </section>
+  );
+};
+
 AppointmentCard.Time = function AppointmentCardTime({
   className,
 }: {
   className?: string;
 }) {
-  //   const { appointmentCard } = useAppointmentCardContext();
+  const { appointmentCard } = useAppointmentCardContext();
   return (
     <section
       className={twMerge(
         "flex items-center divide-x-2 divide-primary",
         className
       )}
-    ></section>
+    >
+      <p className="pr-4 font-bold">{appointmentCard?.startDate}</p>
+      <p className="pl-4">{appointmentCard?.time}</p>
+    </section>
   );
 };
 
@@ -87,8 +123,12 @@ AppointmentCard.Location = function AppointmentCardLocation({
 }: {
   className?: string;
 }) {
-  //   const { appointmentCard } = useAppointmentCardContext();
-  return <section className={twMerge("text-black", className)}></section>;
+  const { appointmentCard } = useAppointmentCardContext();
+  return (
+    <section className={twMerge("text-black", className)}>
+      {appointmentCard?.location}
+    </section>
+  );
 };
 
 AppointmentCard.Slots = function AppointmentCardSlots({
@@ -96,6 +136,11 @@ AppointmentCard.Slots = function AppointmentCardSlots({
 }: {
   className?: string;
 }) {
-  //   const { appointmentCard } = useAppointmentCardContext();
-  return <section className={twMerge("text-black", className)}></section>;
+  const { appointmentCard } = useAppointmentCardContext();
+  const slots = appointmentCard?.slots;
+  return (
+    <section className={twMerge("text-black", className)}>
+      {slots} {APP_CONSTANTS.LABELS.SLOTS_LEFT}
+    </section>
+  );
 };

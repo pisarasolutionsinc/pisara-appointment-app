@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { PLACEHOLDERS } from "../config/placeholderImg";
 
 export const setTitle = (title: string) => {
@@ -73,7 +74,7 @@ export const getUserInitials = (
 
 export const getLatestImageUrl = (attachments: string[]) => {
   const imageUrls = attachments.filter((url) =>
-    url.match(/\.(jpeg|jpg|gif|png|bmp|svg)$/i)
+    url.match(/\.(jpeg|jpg|gif|png|bmp|svg|webp)$/i)
   );
 
   return imageUrls.length > 0
@@ -83,7 +84,7 @@ export const getLatestImageUrl = (attachments: string[]) => {
 
 export const getAllImagesUrl = (attachments: string[]) => {
   const imageUrls = attachments.filter((url) =>
-    url.match(/\.(jpeg|jpg|gif|png|bmp|svg)$/i)
+    url.match(/\.(jpeg|jpg|gif|png|bmp|svg|webp)$/i)
   );
 
   return imageUrls.length > 0
@@ -102,4 +103,20 @@ export const extractPublicId = (url: string) => {
   const regex = /\/([^\/]+)\.jpg$/;
   const match = url.match(regex);
   return match ? match[1] : null;
+};
+
+export const formatISODateToReadable = (isoDate: string): string => {
+  const date = DateTime.fromISO(isoDate);
+  return date.toLocaleString(DateTime.DATE_FULL);
+};
+
+export const formatCurrency = (
+  amount: number,
+  currency: string = "PHP",
+  locale: string = "en-PH"
+): string => {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+  }).format(amount);
 };

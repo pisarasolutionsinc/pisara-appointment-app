@@ -73,6 +73,24 @@ export const APP_CONSTANTS = {
     DESCRIPTION: "Description",
     BACKGROUND_IMAGE: "Background Image",
     SERVICE: "Service",
+    SLOTS: "Slots",
+    SLOTS_LEFT: "slots left",
+    NO_CLASSES_AVAILABLE: "No Classes Available",
+    START_DATE: "Start Date",
+    END_DATE: "End Date",
+    LOCATION: "Location",
+    ADDRESS: "Address",
+    INSTRUCTOR: "Instructor",
+    TIME: "Time",
+    FEE: "Fee",
+    NO_SLOT_NUMBER_SET: "No slot number set",
+    NO_INSTRUCTOR_ASSIGNED: "No Instructor assigned",
+    NO_DATE_SET: "No Start Date set",
+    NO_CLASS_SET: "No Class set",
+    NO_ADDRESS_SET: "No Address set",
+    NO_TIME_SET: "No Time set",
+    NO_FEE_SET: "No Fee set",
+    FULL: "Full",
   },
   PLACEHOLDERS: {
     TYPE_MESSAGE_HERE: "Type a message here...",
@@ -139,6 +157,12 @@ export const APP_CONSTANTS = {
       APPLICATION_JSON: "application/json",
     },
   },
+  CURRENCY:{
+    PHP:"PHP"
+  },
+  LOCALE:{
+    EN_PH:"en-PH"
+  }
 };
 
 export const DROPDOWN = {

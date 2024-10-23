@@ -5,9 +5,9 @@ import { twMerge } from "tailwind-merge";
 interface FileImportProps {
   className?: string;
   icon?: ReactNode;
-  onFileUpload?: (files: File | File[]) => void; // Accept single file or an array of files
+  onFileUpload?: (files: File | File[]) => void;
   accept?: string;
-  multiple?: boolean; // New prop to control multiple uploads
+  multiple?: boolean;
 }
 
 const FileImport = ({
@@ -15,7 +15,7 @@ const FileImport = ({
   icon = <FaFile />,
   onFileUpload,
   accept = "image/*",
-  multiple = false, // Default to false for single upload
+  multiple = false,
 }: FileImportProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -28,16 +28,16 @@ const FileImport = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.length) {
       if (multiple) {
-        const filesArray = Array.from(e.target.files); // Convert FileList to array
+        const filesArray = Array.from(e.target.files);
         console.log(filesArray);
         if (onFileUpload) {
-          onFileUpload(filesArray); // Pass the array of files
+          onFileUpload(filesArray);
         }
       } else {
-        const file = e.target.files[0]; // Get the single file
+        const file = e.target.files[0];
         console.log(file);
         if (onFileUpload) {
-          onFileUpload(file); // Pass the single file
+          onFileUpload(file);
         }
       }
     }
@@ -60,9 +60,9 @@ const FileImport = ({
         type="file"
         ref={fileInputRef}
         className="hidden"
-        accept={accept} // Use the dynamic accept prop
-        onChange={handleFileChange} // Handle file change event
-        multiple={multiple} // Set multiple based on prop
+        accept={accept}
+        onChange={handleFileChange}
+        multiple={multiple}
       />
     </div>
   );

@@ -8,7 +8,7 @@ import { PLACEHOLDERS } from "../../config/placeholderImg";
 import { useCreateUser } from "../../hooks/useCreateUser";
 import { UserModel } from "../../models/UserModel";
 import Loading from "../../components/others/Loading";
-import useProject from "../../hooks/useProject";
+import { useProject } from "../../hooks/useProject";
 
 const Register = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);

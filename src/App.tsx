@@ -3,7 +3,7 @@ import { WEBAPP } from "./app/config/config";
 import SplashScreen from "./app/components/others/SplashScreen";
 import { ColorProvider } from "./app/contexts/ColorContext";
 import { setTitle } from "./app/utils/common";
-import useProject from "./app/hooks/useProject";
+import { useProject } from "./app/hooks/useProject";
 
 const Router = lazy(() => import("./app/routes/Router"));
 
