@@ -1,38 +1,99 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ItemModel } from "../models/ItemModel";
 import { useToast } from "../contexts/ToastProvider";
-import { getAllItems } from "../services/ItemServices";
-import useProject from "./useProject";
+import { ItemService } from "../services/ItemService";
 
 const useItems = () => {
-  const { currentProject: project } = useProject();
-  const [item, setItems] = useState<ItemModel[] | null>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [item, setItem] = useState<ItemModel | null>(null);
+  const [loading, setLoading] = useState(false);
   const { showToast } = useToast();
+  const itemService = new ItemService();
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      setLoading(true);
-      setError(null);
+  const fetchItemById = async (itemId: string) => {
+    setLoading(true);
+    itemService.resetQuery();
+    try {
+      const data = await itemService
+        .select([
+          "attachments",
+          "fields",
+          "comments",
+          "children",
+          "workflowId",
+          "number",
+          "assignees",
+        ])
+        .populate([
+          { path: "assignees" },
+          { path: "fields.common.fieldId" },
+          { path: "fields.custom.fieldId" },
+          { path: "children" },
+        ])
+        .getItemById(itemId);
 
-      try {
-        if (!project) return;
+      setItem(data);
+    } catch (error) {
+      showToast("Failed to fetch item.", "error", "top-20 right-10");
+      console.error("Failed fetching item:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        const data = await getAllItems();
-        setItems(data);
-      } catch (error) {
-        showToast("Failed to fetch all items.", "error", "top-10 right-10");
-        console.error("failed fetching all items:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const createItem = async (itemData: ItemModel) => {
+    setLoading(true);
 
-    fetchItems();
-  }, [project]);
+    try {
+      const createdItem = await itemService.createItem(itemData);
+      showToast("Item created successfully!", "success", "top-20 right-10");
+      return createdItem;
+    } catch (error) {
+      showToast("Failed to create item.", "error", "top-20 right-10");
+      console.error("Error creating item:", error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  return { item, loading, error };
+  const updateItem = async (itemData: ItemModel) => {
+    setLoading(true);
+    try {
+      const createdItem = await itemService.updateItem(itemData);
+      showToast("Updated Item successfully!", "success", "top-20 right-10");
+      return createdItem;
+    } catch (error) {
+      showToast("Failed to update item.", "error", "top-20 right-10");
+      console.error("Error updating item:", error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addChildItem = async (itemData: ItemModel) => {
+    setLoading(true);
+    try {
+      const createdItem = await itemService.addChild(itemData);
+      showToast("Added Child Item successfully!", "success", "top-20 right-10");
+      return createdItem;
+    } catch (error) {
+      showToast("Failed to add child item.", "error", "top-20 right-10");
+      console.error("Error adding child item:", error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    fetchItemById,
+    createItem,
+    updateItem,
+    addChildItem,
+    item,
+    loading,
+  };
 };
 
 export default useItems;

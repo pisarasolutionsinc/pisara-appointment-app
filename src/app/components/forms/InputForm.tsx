@@ -27,8 +27,8 @@ interface InputFormProps {
   className?: string;
   placeholder?: string;
   value?: string | number;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   max?: number | string;
   min?: number | string;
   maxLength?: number;

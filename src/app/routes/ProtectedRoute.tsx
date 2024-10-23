@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import Loading from "../components/others/Loading";
 import Forbidden from "../pages/Errors/Forbidden";
+
 interface ProtectedRouteProps {
   allowedRoles: ("admin" | "user" | "viewer")[];
 }
@@ -28,7 +29,7 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
     return <Navigate to="/login" replace />;
   }
 
-  if (!allowedRoles.includes(user.type)) {
+  if (!allowedRoles.includes(user.type!)) {
     return <Forbidden />;
   }
 

@@ -1,10 +1,29 @@
+import { useContext, useState } from "react";
 import InputForm from "../../../components/forms/InputForm";
 import LocationPicker from "../../../components/forms/LocationPicker";
 import RadioForm from "../../../components/forms/RadioForm";
 import SelectForm from "../../../components/forms/SelectForm";
 import { APP_CONSTANTS, DROPDOWN } from "../../../config/config";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 const AppointmentForm = () => {
+  const authContext = useContext(AuthContext);
+  const user = authContext?.user;
+  const [formData, setFormData] = useState({
+    firstName: user?.firstname || "",
+    lastName: user?.lastname || "",
+    email: user?.email || "",
+    contactNumber: "",
+  });
+
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const handleLocationChange = () => {};
   return (
     <>
@@ -19,24 +38,32 @@ const AppointmentForm = () => {
               className="bg-transparent border-2 border-primary focus:border-0 text-primary font-semibold"
               type="text"
               placeholder="Enter First Name"
+              name="firstName"
+              onChange={handleChange}
+              value={formData.firstName || ""}
             />
             <InputForm
               label="Last Name"
               className="bg-transparent border-2 border-primary focus:border-0 text-primary font-semibold"
               type="text"
               placeholder="Enter Last Name"
+              name="lastName"
+              onChange={handleChange}
+              value={formData.lastName || ""}
             />
             <InputForm
               label="Middle Initial"
               className="bg-transparent border-2 border-primary focus:border-0 text-primary font-semibold"
               type="text"
               placeholder="Enter Middle Initial"
+              onChange={handleChange}
             />
             <InputForm
               label="Suffix (Optional)"
               className="bg-transparent border-2 border-primary focus:border-0 text-primary font-semibold"
               type="text"
               placeholder="Enter Suffix"
+              onChange={handleChange}
             />
           </section>
 
@@ -52,6 +79,7 @@ const AppointmentForm = () => {
               label="Birthday"
               className="bg-transparent border-2 border-primary focus:border-0 text-primary font-semibold"
               type="date"
+              onChange={handleChange}
             />
             <SelectForm
               label="Gender"
@@ -61,6 +89,7 @@ const AppointmentForm = () => {
               options={DROPDOWN.GENDER}
               placeholder="Please select an option"
               disabled={false}
+              onChange={handleChange}
             />
           </section>
 
@@ -70,6 +99,9 @@ const AppointmentForm = () => {
               className="bg-transparent border-2 border-primary focus:border-0 text-primary font-semibold"
               type="email"
               placeholder="Enter Email"
+              name="email"
+              onChange={handleChange}
+              value={formData.email || ""}
             />
             <InputForm
               label="Contact Number"

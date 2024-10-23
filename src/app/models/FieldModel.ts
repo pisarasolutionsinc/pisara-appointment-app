@@ -1,7 +1,7 @@
 export interface FieldModel {
-  _id: string;
-  name: string;
-  type:
+  _id?: string;
+  name?: string;
+  type?:
     | "singletext"
     | "multitext"
     | "number"
@@ -13,6 +13,6 @@ export interface FieldModel {
     | "calculated"
     | "item"
     | "object";
-  category: "common" | "custom";
-  value: any;
+  category?: "common" | "custom";
+  value?: any;
 }

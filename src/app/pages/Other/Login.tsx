@@ -7,7 +7,7 @@ import { PLACEHOLDERS } from "../../config/placeholderImg";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useToast } from "../../contexts/ToastProvider";
 import Loading from "../../components/others/Loading";
-import useProject from "../../hooks/useProject";
+import { useProject } from "../../hooks/useProject";
 
 const Login = () => {
   const [email, setEmail] = useState("");

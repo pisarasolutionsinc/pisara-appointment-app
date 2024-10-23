@@ -1,121 +1,39 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import Button from "../../../components/buttons/Button";
 import { APP_CONSTANTS, WEBAPP } from "../../../config/config";
-import useProject from "../../../hooks/useProject";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { MdModeEdit } from "react-icons/md";
-import useModal from "../../../hooks/useModal";
 import Modal from "../../../components/others/Modal";
 import InputForm from "../../../components/forms/InputForm";
 import TextAreaForm from "../../../components/forms/TextAreaForm";
-import { ProjectModel } from "../../../models/ProjectModel";
 import FileImport from "../../../components/forms/FileImport";
 import { FaImage } from "react-icons/fa6";
-import { useToast } from "../../../contexts/ToastProvider";
 import { IoIosClose } from "react-icons/io";
-import { useFileUpload } from "../../../hooks/useFileUpload";
-import { getLatestImageUrl } from "../../../utils/common";
 import Loading from "../../../components/others/Loading";
+import useHeroSection from "../../../hooks/useHeroSection";
 
 interface HeroSectionProps {
   scrollToSchedule: () => void;
 }
 
 const HeroSection = ({ scrollToSchedule }: HeroSectionProps) => {
-  const [hasBackgroundImage, setHasBackgroundImage] = useState<string | null>(
-    null
-  );
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const { currentProject, updateProject, loading } = useProject();
+  const {
+    currentProject,
+    handleUpdateProject,
+    handleInputChange,
+    backgroundImageUrl,
+    clearBackgroundImage,
+    handleFileUpload,
+    hasBackgroundImage,
+    isOpen,
+    projectData,
+    openModal,
+    closeModal,
+    loading,
+  } = useHeroSection();
+
   const authContext = useContext(AuthContext);
   const user = authContext?.user;
-  const { isOpen, openModal, closeModal } = useModal();
-  const { showToast } = useToast();
-  const [projectData, setProjectData] = useState<Partial<ProjectModel>>({
-    name: "",
-    description: "",
-  });
-  const { uploadFile } = useFileUpload();
-
-  useEffect(() => {
-    if (isOpen && currentProject) {
-      setProjectData({
-        name: currentProject.name,
-        description: currentProject.description,
-      });
-      const latestImageUrl = getLatestImageUrl(
-        currentProject.attachments || []
-      );
-      setHasBackgroundImage(latestImageUrl);
-    }
-  }, [isOpen, currentProject]);
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setProjectData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleFileUpload = (files: File | File[]) => {
-    if (Array.isArray(files)) {
-      if (files.length > 0) {
-        handleSingleFileUpload(files[0]);
-      }
-    } else {
-      handleSingleFileUpload(files);
-    }
-  };
-
-  const handleSingleFileUpload = (file: File) => {
-    const imageUrl = URL.createObjectURL(file);
-    setHasBackgroundImage(imageUrl);
-    setUploadedFile(file);
-  };
-
-  const clearBackgroundImage = () => {
-    setHasBackgroundImage(null);
-    setUploadedFile(null);
-  };
-
-  const handleUpdateProject = async () => {
-    if (!projectData.name) {
-      showToast("Name is required.", "error", "top-20 right-10");
-      return;
-    }
-
-    const updatedProject: ProjectModel = {
-      _id: currentProject!._id,
-      owner: currentProject!.owner,
-      name: projectData.name,
-      description: projectData.description || "",
-      attachments: currentProject?.attachments || [],
-      key: currentProject!.key,
-    };
-
-    try {
-      if (uploadedFile) {
-        const result = await uploadFile(
-          uploadedFile,
-          `project/${currentProject?._id}/images`
-        );
-        updatedProject.attachments?.push(result.secure_url);
-        setHasBackgroundImage(result.secure_url);
-      }
-      await updateProject(updatedProject);
-      closeModal();
-    } catch (error) {
-      console.error("Update failed:", error);
-      showToast("Failed to update project.", "error", "top-20 right-10");
-    }
-  };
-
-  const backgroundImageUrl = getLatestImageUrl(
-    currentProject?.attachments || []
-  );
 
   return (
     <>

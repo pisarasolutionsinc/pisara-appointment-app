@@ -1,12 +1,13 @@
 import { useRef } from "react";
-import AboutUsSection from "./features/AboutUsSection";
-import GallerySection from "./features/GallerySection";
-import GetInTouchSection from "./features/GetInTouchSection";
-import HeroSection from "./features/HeroSection";
-import ScheduleSection from "./features/ScheduleSection";
-import ServicesSection from "./features/ServicesSection";
+
 import ScrollToTopButton from "../../components/buttons/ScrollToTopButton";
 import { IoIosArrowUp } from "react-icons/io";
+import HeroSection from "./features/HeroSection";
+import GallerySection from "./features/GallerySection";
+import AboutUsSection from "./features/AboutUsSection";
+import GetInTouchSection from "./features/GetInTouchSection";
+import ServicesSection from "./features/ServicesSection";
+import ScheduleSection from "./features/ScheduleSection";
 
 const Homepage = () => {
   const scheduleRef = useRef<HTMLDivElement>(null);
@@ -27,9 +28,11 @@ const Homepage = () => {
         <HeroSection scrollToSchedule={scrollToSchedule} />
         <ServicesSection />
         <GallerySection />
+
         <div ref={scheduleRef}>
           <ScheduleSection />
         </div>
+
         <AboutUsSection />
         <GetInTouchSection />
         <ScrollToTopButton

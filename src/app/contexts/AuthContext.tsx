@@ -1,7 +1,7 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
 import { UserModel } from "../models/UserModel";
-import { loginUser, logoutUser } from "../services/UserServices";
-import { getLocal, removeLocal, saveLocal } from "../hooks/useLocalStorage";
+import { loginUser, logoutUser } from "../services/UserService";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface AuthContextType {
   user: UserModel | null;
@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<UserModel | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const { getLocal, removeLocal, saveLocal } = useLocalStorage();
 
   useEffect(() => {
     const storedUser = getLocal("user");

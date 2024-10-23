@@ -2,12 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { APP_CONSTANTS, WEBAPP } from "../../config/config";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
-import { getDisplayName, getUserInitials } from "../../utils/common";
 import Button from "../buttons/Button";
 import { useToast } from "../../contexts/ToastProvider";
 import LinkButton from "../buttons/LinkButton";
 import { IoIosArrowDown } from "react-icons/io";
-import useProject from "../../hooks/useProject";
+import { useProject } from "../../hooks/useProject";
+import { getDisplayName, getUserInitials } from "../../utils/common";
 
 const Header = () => {
   const [isPanelOpen, setIsPanelOpen] = useState(false);

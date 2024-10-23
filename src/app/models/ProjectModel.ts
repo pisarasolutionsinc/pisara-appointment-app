@@ -46,9 +46,5 @@ export interface ProjectModel {
   board?: BoardModel;
   projectCounter?: number;
 
-  metadata?: {
-    branding: {
-      logo: any;
-    };
-  };
+  metadata?: {};
 }

@@ -3,7 +3,7 @@ import { ProjectModel } from "./ProjectModel";
 import { UserModel } from "./UserModel";
 
 export interface ItemModel {
-  _id: string;
+  _id?: string;
   number?: number;
   projectId?: ProjectModel;
   attachment?: {

@@ -1,160 +1,38 @@
-import { APP_CONSTANTS } from "../../../config/config";
-import Gallery from "./Gallery";
-import useProject from "../../../hooks/useProject";
-import { useContext, useState } from "react";
-import { AuthContext } from "../../../contexts/AuthContext";
+import { IoIosClose } from "react-icons/io";
 import Button from "../../../components/buttons/Button";
-import useModal from "../../../hooks/useModal";
 import Modal from "../../../components/others/Modal";
+import { APP_CONSTANTS } from "../../../config/config";
+import useModal from "../../../hooks/useModal";
+import Gallery from "./Gallery";
 import FileImport from "../../../components/forms/FileImport";
 import { FaImage } from "react-icons/fa";
-import { IoIosClose } from "react-icons/io";
 import Loading from "../../../components/others/Loading";
-import { useFileUpload } from "../../../hooks/useFileUpload";
-import { ProjectModel } from "../../../models/ProjectModel";
-import { useToast } from "../../../contexts/ToastProvider";
-import { extractPublicId } from "../../../utils/common";
+import useGallery from "../../../hooks/useGallery";
 
 const GallerySection = () => {
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [selectedImageForDeletion, setSelectedImageForDeletion] = useState<{
-    imageUrl: string;
-    publicId: string | null;
-  } | null>(null);
-
-  const { currentProject, updateProject, loading } = useProject();
-  const { isOpen, openModal, closeModal } = useModal();
   const {
-    isOpen: isDeleteModalOpen,
-    openModal: openDeleteModal,
-    closeModal: closeDeleteModal,
-  } = useModal();
-  const authContext = useContext(AuthContext);
-  const user = authContext?.user;
-  const { showToast } = useToast();
-  const { uploadFile, removeFile } = useFileUpload();
+    uploadedFiles,
+    selectedImageForDeletion,
+    handleFileUpload,
+    clearImage,
+    handleDeleteImage,
+    handleUpdateGallery,
+    handleRemoveImage,
+    galleryImages,
+    loading,
+    user,
+    isDeleteModalOpen,
+    setIsDeleteModalOpen,
+  } = useGallery();
+  const { isOpen, openModal, closeModal } = useModal();
 
-  const handleFileUpload = (files: File | File[]) => {
-    if (Array.isArray(files)) {
-      const totalImages =
-        galleryImages.length + uploadedFiles.length + files.length;
-
-      if (totalImages > 9) {
-        showToast(
-          "You can only upload up to 9 images in total.",
-          "error",
-          "top-20 right-10"
-        );
-        return;
-      }
-      setUploadedFiles((prev) => [...prev, ...files]);
-    } else {
-      const totalImages = galleryImages.length + uploadedFiles.length + 1;
-
-      if (totalImages > 9) {
-        showToast(
-          "You can only upload up to 9 images in total.",
-          "error",
-          "top-20 right-10"
-        );
-        return;
-      }
-      setUploadedFiles((prev) => [...prev, files]);
-    }
-  };
-
-  const clearImage = (index: number, isUploaded: boolean) => {
-    if (isUploaded) {
-      setUploadedFiles((prev) => prev.filter((_, i) => i !== index));
-    }
-  };
-
-  const handleDeleteImage = (imageUrl: string, publicId: string | null) => {
-    if (!publicId) {
-      console.error("Public ID is required for deletion.");
-      return;
-    }
-
-    console.log(publicId);
-    setSelectedImageForDeletion({ imageUrl, publicId });
-    openDeleteModal();
-  };
-
-  const handleUpdateGallery = async () => {
-    const updatedProject: ProjectModel = {
-      _id: currentProject!._id,
-      owner: currentProject!.owner,
-      name: currentProject!.name,
-      description: currentProject?.description || "",
-      attachments: currentProject?.attachments || [],
-      key: currentProject!.key,
-    };
-
-    try {
-      for (const file of uploadedFiles) {
-        const result = await uploadFile(
-          file,
-          `project/${currentProject?._id}/images`
-        );
-        updatedProject.attachments?.push(result.secure_url);
-      }
-      await updateProject(updatedProject);
-    } catch (error) {
-      console.error("Update failed:", error);
-      showToast("Failed to update project.", "error", "top-20 right-10");
-    }
-  };
-
-  const handleRemoveImage = async () => {
-    if (selectedImageForDeletion && selectedImageForDeletion.publicId) {
-      console.log("Deleting publicId:", selectedImageForDeletion.publicId);
-
-      try {
-        const removalResult = await removeFile(
-          selectedImageForDeletion.publicId
-        );
-        console.log("Cloudinary removal result:", removalResult);
-
-        if (!currentProject?._id) {
-          throw new Error("Project ID is required to update the project.");
-        }
-
-        const updatedProject: ProjectModel = {
-          _id: currentProject._id,
-          owner: currentProject.owner,
-          name: currentProject.name,
-          description: currentProject.description || "",
-          attachments:
-            currentProject.attachments?.filter(
-              (attachment) => attachment !== selectedImageForDeletion.imageUrl
-            ) || [],
-          key: currentProject.key,
-          metadata: currentProject.metadata,
-        };
-
-        await updateProject(updatedProject);
-        showToast("Image removed successfully", "success", "top-20 right-10");
-      } catch (error) {
-        console.error("Remove failed:", error);
-        showToast("Failed to remove image", "error", "top-20 right-10");
-      } finally {
-        closeDeleteModal();
-      }
-    } else {
-      console.error("No valid image selected for deletion.");
-    }
-  };
-
-  const galleryImages =
-    currentProject?.attachments?.map((url) => ({
-      url,
-      publicId: extractPublicId(url),
-    })) || [];
-
-  const totalImages = galleryImages.length + uploadedFiles.length;
   const imageUrls = galleryImages.map((image) => image.url);
 
-  const canAddMoreImages = totalImages < 9;
+  const canAddMoreImages = galleryImages.length + uploadedFiles.length < 9;
+
+  if (!galleryImages.length) {
+    return null;
+  }
 
   return (
     <>
@@ -194,7 +72,6 @@ const GallerySection = () => {
               <div key={index} className="relative">
                 <Button
                   className="absolute top-1 right-1 p-0 rounded-full text-white bg-neutral"
-                  ariaLabel={APP_CONSTANTS.BUTTONS.CANCEL}
                   onClick={() => handleDeleteImage(image.url, image.publicId)}
                 >
                   <IoIosClose className="text-2xl" />
@@ -202,24 +79,22 @@ const GallerySection = () => {
                 <img
                   src={image.url}
                   alt={`Gallery image ${index + 1}`}
-                  className="w-full h-full object-cover rounded-md"
+                  className="w-full h-52 object-cover object-top rounded-md"
                 />
               </div>
             ))}
-
             {uploadedFiles.map((file, index) => (
               <div key={index} className="relative">
                 <Button
                   className="absolute top-1 right-1 p-0 rounded-full text-white bg-neutral"
                   onClick={() => clearImage(index, true)}
-                  ariaLabel={APP_CONSTANTS.BUTTONS.CANCEL}
                 >
                   <IoIosClose className="text-2xl" />
                 </Button>
                 <img
                   src={URL.createObjectURL(file)}
                   alt={`Uploaded image ${index + 1}`}
-                  className="w-full h-auto"
+                  className="w-full h-full"
                 />
               </div>
             ))}
@@ -233,7 +108,6 @@ const GallerySection = () => {
               />
             )}
           </div>
-
           <hr />
           <section className="flex justify-end gap-5">
             <Button
@@ -262,8 +136,7 @@ const GallerySection = () => {
       {isDeleteModalOpen && selectedImageForDeletion && (
         <Modal
           isOpen={isDeleteModalOpen}
-          onClose={closeDeleteModal}
-          className="w-1/2"
+          onClose={() => setIsDeleteModalOpen(false)}
           title={APP_CONSTANTS.TITLES.DELETE_IMAGE}
         >
           <img
@@ -276,7 +149,7 @@ const GallerySection = () => {
           <section className="flex justify-end gap-5">
             <Button
               className="text-black"
-              onClick={closeDeleteModal}
+              onClick={() => setIsDeleteModalOpen(false)}
               ariaLabel={APP_CONSTANTS.BUTTONS.CANCEL}
             >
               {APP_CONSTANTS.BUTTONS.CANCEL}
